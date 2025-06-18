@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UndergroundPC - Facebook Image Ad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom Fonts from Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800;900&family=Roboto:wght@300;400;600;700&display=swap');
+
+        /* Define CSS Variables for colors from style.css for self-containment */
+        :root {
+            --color-dark-gray: #161616;
+            --color-light-gray: #3c3c3c; /* Used for grid lines */
+            --color-red-primary-start: #820303; /* Start of red-purple gradient */
+            --color-red-primary-end: #5d045d;   /* End of red-purple gradient */
+            --color-text-on-dark: rgba(255, 255, 255, 0.98); /* Brighter main text */
+            --color-text-subtle: rgba(255, 255, 255, 0.75); /* Slightly brighter subtle text */
+            --color-accent-red: #e82c2c; /* Direct red for strong highlights */
+            /* New colors for falling parts */
+            --color-part-blue: #3498db;
+            --color-part-green: #2ecc71;
+            --color-part-yellow: #f1c40f;
+            --color-part-purple: #9b59b6;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif; /* Default body font */
+            background-color: var(--color-dark-gray);
+            /* Dynamic Grid Background */
+            background-image:
+                repeating-linear-gradient(0deg, var(--color-light-gray) 0, var(--color-light-gray) 1px, transparent 1px, transparent 30px),
+                repeating-linear-gradient(90deg, var(--color-light-gray) 0, var(--color-light-gray) 1px, transparent 1px, transparent 30px);
+            background-size: 30px 30px;
+            background-position: center center;
+            background-repeat: repeat;
+            animation: moveGrid 60s linear infinite; /* Animation for the grid */
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent scroll for the static ad image */
+        }
+        /* Changed heading font to Montserrat for slogans, but H1 will be Bebas Neue */
+        h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif; /* Headings font (used for slogans now) */
+        }
+
+        /* Keyframe for moving grid */
+        @keyframes moveGrid {
+            0% { background-position: 0 0; }
+            100% { background-position: 60px 60px; } /* Moves 2 grid cells over time */
+        }
+
+        /* Custom styles for the ad container */
+        .ad-container-theme {
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(25, 25, 25, 0.9));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25); /* Slightly more visible border */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9); /* More pronounced shadow */
+            position: relative; /* CRITICAL: Ensure this is set for child positioning */
+            overflow: hidden; /* CRITICAL: Ensure this is set to clip children */
+            transform: translateY(0); /* Base for animation */
+            animation: fadeInAd 1s ease-out forwards; /* Fade in animation for ad container */
+        }
+
+        @keyframes fadeInAd {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Glowing border effect for the PC image/SVG */
+        .glowing-border-wrap {
+            position: relative;
+            padding: 3px; /* Adjusted padding */
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--color-accent-red), var(--color-red-primary-end), var(--color-accent-red));
+            background-size: 200% 200%;
+            animation: glowing-border 4s ease infinite;
+            box-shadow: 0 0 20px rgba(232, 44, 44, 0.8); /* Stronger initial glow */
+        }
+
+        /* IMPORTANT: This targets the SVG element within the glowing-border-wrap */
+        .glowing-border-wrap svg {
+            display: block;
+            border-radius: 8px; /* Apply to SVG for consistency if it had a background */
+            /* Add subtle internal glow for the computer SVG */
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.1));
+            transition: filter 0.3s ease-in-out;
+        }
+
+        .glowing-border-wrap:hover svg {
+             filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+        }
+
+
+        @keyframes glowing-border {
+            0% { background-position: 0% 50%; box-shadow: 0 0 20px rgba(232, 44, 44, 0.8); }
+            50% { background-position: 100% 50%; box-shadow: 0 0 35px rgba(232, 44, 44, 1); } /* More intense glow */
+            100% { background-position: 0% 50%; box-shadow: 0 0 20px rgba(232, 44, 44, 0.8); }
+        }
+
+        /* Styling for the primary button to use the gradient */
+        .btn-style-primary {
+            background: linear-gradient(to right, var(--color-red-primary-start), var(--color-red-primary-end));
+            color: white;
+            border: 2px solid var(--color-red-primary-start);
+            transition: all 0.3s ease-in-out; /* Smoother transition */
+            box-shadow: 0 8px 25px rgba(130, 3, 3, 0.7); /* Even stronger shadow */
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            transform: scale(1); /* Base for animation */
+        }
+
+        .btn-style-primary:hover {
+            transform: scale(1.05); /* Slight grow effect */
+            box-shadow: 0 10px 30px rgba(130, 3, 3, 0.9); /* Intensify shadow on hover */
+            border-color: var(--color-accent-red); /* Change border color on hover */
+        }
+
+        .btn-style-secondary {
+            background-color: transparent;
+            color: var(--color-text-on-dark);
+            border: 2px solid var(--color-text-subtle);
+            transition: all 0.3s ease-in-out; /* Smoother transition */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Slightly stronger shadow */
+            font-weight: 700;
+            transform: scale(1); /* Base for animation */
+        }
+
+        .btn-style-secondary:hover {
+            transform: scale(1.05); /* Slight grow effect */
+            border-color: var(--color-accent-red); /* Accent color on hover */
+            color: var(--color-accent-red); /* Change text color on hover */
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.7); /* Intensify shadow on hover */
+        }
+
+        /* Text animation */
+        .animated-text {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: slideInText 0.8s ease-out forwards;
+        }
+        .animated-text.delay-1 { animation-delay: 0.3s; }
+        .animated-text.delay-2 { animation-delay: 0.6s; }
+
+        @keyframes slideInText {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- NEW/UPDATED CSS FOR FALLING PARTS --- */
+        .falling-part {
+            position: absolute;
+            user-select: none;
+            pointer-events: none; /* Allow clicks to pass through */
+            z-index: 10; /* Ensure parts are above the ad container content */
+            display: flex; /* Use flexbox to center SVG */
+            align-items: center;
+            justify-content: center;
+            will-change: transform, opacity; /* Optimize for animation */
+        }
+
+        .falling-part svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            /* Optional: Add a subtle glow/shadow to the parts themselves */
+            filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.2));
+        }
+        /* --- END NEW/UPDATED CSS --- */
+
+        /* Responsive adjustments for text and layout */
+        @media (max-width: 640px) { /* Small screens (sm breakpoint) */
+            .ad-container-theme {
+                padding: 15px;
+            }
+            h1 { /* UndergroundPC - now Bebas Neue */
+                font-family: 'Bebas Neue', sans-serif;
+                font-size: 2.05rem; /* Minutely refined for mobile, ensures fit */
+                letter-spacing: 0.04em; /* Added positive spacing to open it up */
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+            }
+            .slogan-heading { /* UNLEASH YOUR ULTIMATE RIG. */
+                font-size: 1.6rem;
+            }
+            .slogan-text-main { /* GAME, CREATE, CONQUER. */
+                font-size: 0.75rem;
+            }
+            .button-text {
+                font-size: 0.8rem;
+                padding: 10px 18px;
+            }
+            .small-text {
+                font-size: 0.6rem;
+            }
+            /* Adjust SVG size for mobile */
+            .hero-svg-icon {
+                height: 110px; /* Adjusted height for mobile */
+                margin-bottom: 15px;
+                width: auto; /* Allow width to scale proportionally */
+            }
+            .glowing-border-wrap {
+                padding: 2px; /* Slightly more padding for glow on mobile */
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 768px) { /* Medium screens (md breakpoint) */
+            h1 { /* UndergroundPC - now Bebas Neue */
+                font-family: 'Bebas Neue', sans-serif;
+                font-size: 2.5rem; /* Slightly refined for medium screens */
+                letter-spacing: 0.03em; /* Slightly less tight tracking */
+                text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+            }
+            .slogan-heading { /* UNLEASH YOUR ULTIMATE RIG. */
+                font-size: 2.1rem;
+            }
+            .slogan-text-main { /* GAME, CREATE, CONQUER. */
+                font-size: 0.9rem;
+            }
+            .button-text {
+                font-size: 0.95rem;
+                padding: 12px 22px;
+            }
+            /* Adjust SVG size for medium screens */
+            .hero-svg-icon {
+                height: 180px; /* Adjusted height for medium screens */
+            }
+            .glowing-border-wrap {
+                padding: 4px;
+            }
+        }
+
+        /* Desktop adjustments (default sizes) */
+        .ad-container-theme {
+            padding: 40px;
+        }
+        h1 { /* UndergroundPC - now Bebas Neue */
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.0rem; /* Adjusted for desktop presence */
+            letter-spacing: 0.02em; /* Slightly less tight tracking */
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* More pronounced shadow for depth */
+        }
+        .slogan-heading { /* UNLEASH YOUR ULTIMATE RIG. */
+            font-size: 2.5rem;
+        }
+        .slogan-text-main { /* GAME, CREATE, CONQUER. */
+            font-size: 1.1rem;
+        }
+        .button-text {
+            font-size: 1rem;
+            padding: 14px 28px;
+        }
+        .small-text {
+            font-size: 0.8rem;
+        }
+        /* Adjust SVG size for desktop */
+        .hero-svg-icon {
+            height: 250px; /* Adjusted height for desktop */
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="ad-container-theme text-white p-6 md:p-8 lg:p-10 rounded-xl
+                max-w-xs sm:max-w-md lg:max-w-lg w-full
+                flex flex-col items-center text-center"
+         role="img" aria-label="Advertisement for UndergroundPC, featuring high-performance gaming computers."
+         id="ad-container">
+        <div class="glowing-border-wrap w-full mb-8 flex items-center justify-center p-4">
+            <svg class="hero-svg-icon" viewBox="0 0 24 24" fill="currentColor" style="color: var(--color-text-on-dark); width: 80%; max-width: 200px; height: auto;">
+                <path d="M17 1H7C5.9 1 5 1.9 5 3v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-2-2-2zM7 3h10v18H7V3zm8 16h-6v-1h6v1zm0-3h-6v-1h6v1zm0-3h-6V9h6v4zM8 5h8v2H8V5z" fill="var(--color-text-on-dark)"/>
+                </svg>
+        </div>
+
+        <h2 class="font-black text-white mb-4 tracking-tighter leading-none animated-text" style="font-family: sans-serif;">
+            UndergroundPC
+        </h2>
+
+        <p class="mb-8 leading-snug px-2 font-black animated-text delay-1" style="color: var(--color-text-on-dark);">
+            <span class="block font-extrabold slogan-heading" style="color: var(--color-accent-red);">UNLEASH YOUR ULTIMATE RIG.</span>
+            <span class="block mt-1 slogan-text-main">GAME, CREATE, CONQUER.</span>
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 w-full justify-center mb-6 animated-text delay-2" role="group" aria-label="Call to action buttons">
+            <div class="inline-block btn-style-primary font-bold py-3 px-8 rounded-full shadow-lg w-full sm:w-auto button-text"
+                 aria-label="Build Your Power button">
+                Build Your Power.
+            </div>
+            <div class="inline-block btn-style-secondary font-bold py-3 px-8 rounded-full shadow-lg w-full sm:w-auto button-text"
+                 aria-label="Explore PCs button">
+                Check Our Bio.
+            </div>
+        </div>
+
+        <p class="mt-2 small-text animated-text delay-2" style="color: var(--color-text-subtle);">
+            Precision-crafted for unrivaled performance.
+        </p>
+    </div>
+
+    <script>
+        const adContainer = document.getElementById('ad-container');
+
+        // Raindrop SVG (the new, more accurate shape)
+        const raindropSVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C7.58 2 4 5.58 4 10c0 4.42 8 12 8 12s8-7.58 8-12c0-4.42-3.58-8-8-8z"/></svg>`;
+
+        const partColors = [
+            '#42A5F5', // Light Blue for raindrops
+            '#2196F3', // Blue for raindrops
+            '#1976D2', // Darker Blue for raindrops
+            '#9E9E9E', // Gray for a different kind of drop or subtle variation
+            'rgba(255, 255, 255, 0.7)' // A subtle white/gray option
+        ];
+
+        let raindropIntervalId; // Variable to store the interval ID
+
+        // Function to create and animate falling raindrops
+        function createFallingRaindrop() {
+            const part = document.createElement('div');
+            part.classList.add('falling-part');
+
+            part.innerHTML = raindropSVG; // Insert Raindrop SVG
+
+            const randomColor = partColors[Math.floor(Math.random() * partColors.length)];
+            part.style.color = randomColor; // Set SVG fill color
+
+            const size = Math.random() * 10 + 10; // Raindrop size between 10px and 20px
+            part.style.width = `${size}px`;
+            part.style.height = `${size}px`;
+
+            const adContainerWidth = adContainer.offsetWidth;
+            const adContainerHeight = adContainer.offsetHeight;
+            const startLeft = Math.random() * (adContainerWidth - size);
+            const startTop = -(Math.random() * 80 + size);
+
+            part.style.left = `${startLeft}px`;
+            part.style.top = `${startTop}px`;
+
+            adContainer.appendChild(part);
+
+            const fallDuration = Math.random() * 3000 + 2000; // Raindrops fall faster (2-5s)
+            const driftAmount = Math.random() * 60 - 30; // Horizontal drift: -30 to +30px
+
+            // Apply a 180-degree rotation to make it appear upright
+            const animation = part.animate(
+                [
+                    {
+                        transform: `translateY(0px) translateX(0px) rotate(180deg)`, // Rotate 180 degrees at start
+                        opacity: 0.8,
+                        easing: 'linear'
+                    },
+                    {
+                        transform: `translateY(${adContainerHeight + size + 50}px) translateX(${driftAmount}px) rotate(180deg)`, // Maintain 180-degree rotation at end
+                        opacity: 0.1
+                    }
+                ],
+                {
+                    duration: fallDuration,
+                    iterations: 1,
+                    fill: 'forwards'
+                }
+            );
+
+            animation.onfinish = () => {
+                part.remove();
+            };
+        }
+
+        // Function to start the rain
+        function startRain() {
+            // Clear any existing interval to prevent duplicates
+            if (raindropIntervalId) {
+                clearInterval(raindropIntervalId);
+            }
+            raindropIntervalId = setInterval(() => {
+                const randomDelay = Math.random() * 500 + 200; // Raindrops every 0.2 to 0.7 seconds
+                setTimeout(createFallingRaindrop, randomDelay);
+            }, 500); // Check every 0.5 seconds for a new raindrop
+            console.log("Rain started.");
+        }
+
+        // Function to stop the rain
+        function stopRain() {
+            clearInterval(raindropIntervalId);
+            console.log("Rain stopped.");
+        }
+
+        // Main rain control loop
+        function controlRainCycle() {
+            startRain();
+            // Stop rain after 30 seconds (30000 ms)
+            setTimeout(() => {
+                stopRain();
+                // Start rain again after 5 seconds of pause (5000 ms)
+                setTimeout(controlRainCycle, 5000);
+            }, 30000);
+        }
+
+        // Initialize the rain cycle when the page loads
+        document.addEventListener('DOMContentLoaded', controlRainCycle);
+    </script>
+
+</body>
+</html>
